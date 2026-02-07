@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Valentine Proposal</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #ffd6e8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: fade 0.5s ease-in-out;
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    h1, h2, p {
+      color: #b0005a;
+    }
+
+    img {
+      width: 180px;
+      margin: 15px 0;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      width: 100px;
+      height: 50px;
+      background: #ff4d88;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e6005c;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 10px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    .photo-grid div {
+      background: #fff;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      border: 2px dashed #ff4d88;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MAIN PAGE -->
+  <div class="page active" id="page-main">
+    <h1>Will you be my Valentine?</h1>
+    <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">
+    <div class="btn-group">
+      <button onclick="yesClick()">YES</button>
+      <button onclick="noClick()">NO</button>
+    </div>
+  </div>
+
+  <!-- NO PAGES -->
+  <div class="page" id="page-no">
+    <h2 id="no-text"></h2>
+    <img src="https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif">
+    <div class="btn-group" id="no-buttons"></div>
+  </div>
+
+  <!-- YES MESSAGE PAGE -->
+  <div class="page" id="page-yes">
+    <h2>💖 My Message 💖</h2>
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+    <textarea placeholder="Write your message here"></textarea>
+    <div class="btn-group">
+      <button onclick="nextPage()">NEXT</button>
+    </div>
+  </div>
+
+  <!-- PHOTO PAGE -->
+  <div class="page" id="page-photos">
+    <h2>Our Memories 📸</h2>
+    <img src="https://media.giphy.com/media/l4KibK3JwaVo0CjDO/giphy.gif">
+    <div class="photo-grid">
+      <div>Photo 1</div>
+      <div>Photo 2</div>
+      <div>Photo 3</div>
+      <div>Photo 4</div>
+    </div>
+  </div>
+
+  <script>
+    let noCount = 0;
+
+    const noMessages = [
+      "I will cry 😿",
+      "Think again 🥺",
+      "Please say yes 💔",
+      "Don’t break my heart 😭",
+      "I am begging you 😢",
+      "You mean everything to me 💕",
+      "My heart is melting 🫠",
+      "Last warning 😭",
+      "I can’t handle this 💔",
+      "Pleaseeeeee 🥹"
+    ];
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function noClick() {
+      noCount++;
+      showPage('page-no');
+
+      const text = document.getElementById('no-text');
+      const buttons = document.getElementById('no-buttons');
+
+      text.textContent = noMessages[noCount - 1] || "😿";
+      buttons.innerHTML = "";
+
+      if (noCount < 10) {
+        const noBtn = document.createElement("button");
+        noBtn.textContent = "NO";
+        noBtn.onclick = noClick;
+
+        const yesBtn = document.createElement("button");
+        yesBtn.textContent = "YES";
+        yesBtn.onclick = yesClick;
+
+        buttons.appendChild(yesBtn);
+        buttons.appendChild(noBtn);
+      } else {
+        const backBtn = document.createElement("button");
+        backBtn.textContent = "BACK";
+        backBtn.onclick = () => {
+          noCount = 0;
+          showPage('page-main');
+        };
+        buttons.appendChild(backBtn);
+      }
+    }
+
+    function yesClick() {
+      showPage('page-yes');
+    }
+
+    function nextPage() {
+      showPage('page-photos');
+    }
+  </script>
+
+</body>
+</html>
